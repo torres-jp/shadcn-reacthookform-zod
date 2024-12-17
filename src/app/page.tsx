@@ -39,14 +39,22 @@ const userSChema = z.object({
   status: z.enum(['single', 'married', 'divorced', 'widowed']),
 })
 
+type UserType = z.infer<typeof userSChema>
+
 const statusOptions = ['single', 'married', 'divorced', 'widowed']
 
 function HomePage() {
-  const form = useForm({
+  const form = useForm<UserType>({
     resolver: zodResolver(userSChema),
+    defaultValues: {
+      name: '',
+      lastName: '',
+      age: 0,
+      status: 'single',
+    },
   })
 
-  const onSubmit = form.handleSubmit((values) => {
+  const onSubmit = form.handleSubmit((values: UserType) => {
     console.log(values)
   })
 
